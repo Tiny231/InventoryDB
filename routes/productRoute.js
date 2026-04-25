@@ -2,10 +2,15 @@ const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
 
-router.post('/products', productController.createProduct);
-router.get('/products', productController.getProducts);
-router.get('/products:id', productController.getProductById);
-router.put('/products:id', productController.updateProduct);
-router.delete('/products:id', productController.deleteProduct);
+const {protect} = require ('../middleware/authMiddleware');
+const {authorizeRoles} = require ('../middleware/roleMiddleware');
+
+
+
+router.post('/products', protect, productController.createProduct);
+router.get('/products', protect, productController.getProducts);
+router.get('/products/:id', protect, productController.getProductById);
+router.put('/products/:id', protect, productController.updateProduct);
+router.delete('/products/:id', protect, productController.deleteProduct);
 
 module.exports = router;
