@@ -12,5 +12,6 @@ router.get('/products', protect, productController.getProducts);
 router.get('/products/:id', protect, productController.getProductById);
 router.put('/products/:id', protect, productController.updateProduct);
 router.delete('/products/:id', protect, productController.deleteProduct);
-
+router.patch('/upload', protect, productController.updateProductImage);
+router.post('/createproductwithEmail', protect, productController.createProductwithEmails);
 module.exports = router;

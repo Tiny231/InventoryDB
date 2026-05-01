@@ -2,6 +2,8 @@ const User = require('../models/userModels');
 const bcrypt = require('bcrypt');
 const jwt = require ('jsonwebtoken')
 
+const sendEmail = require('../middleware/emailSender')
+
 exports.createuser = async (req, res) => {
  try{
     const{name, password, email, role, phone} = req.body;
@@ -59,7 +61,7 @@ exports.createuser = async (req, res) => {
         const Ismatch = await bcrypt.compare (password, user.password);
 
     if (!Ismatch) {
-        return res.staus(400).json({message: 'Invalid credentials'});
+        return res.status(400).json({message: 'Invalid credentials'});
     };
 
     // Generate Token 
@@ -68,6 +70,22 @@ exports.createuser = async (req, res) => {
         {id: user._id, 
             role: user.role}, process.env.JWT_SECRET,
             { expiresIn: '1d'});
+
+
+            const subject = "NEW LOGIN ALERT";
+               const message = `
+                <h3>NEW LOGIN ALERT</h3>
+                <p>A new login has been detected</p>
+                <ul>
+                    <li><strong>IP Address:</strong> 3517:3681</li>
+                    <li><strong>City:</strong> Lagos</li>
+                </ul>
+`;
+            
+                
+                  await sendEmail(user.email, subject, message);
+
+
 
             res.json({
                 message: 'Login successful',
@@ -85,7 +103,7 @@ exports.createuser = async (req, res) => {
     }
 
     catch {
-        res.staus(500).json({message: 'Invalid'});
+        res.status(500).json({message: 'Invalid'});
     };
 
 
