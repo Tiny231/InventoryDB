@@ -6,11 +6,6 @@ const connectDB = require('./configs/dataBase'); // your DB connection file
 
 const productRoutes = require('./routes/productRoute');
 const userRoutes = require('./routes/userRoute');
-
-
-
-
-
 connectDB();
 
 const app = express();
@@ -22,6 +17,8 @@ app.use(express.json());
 app.use('/api', productRoutes);
 
 app.use('/api', userRoutes)
+
+
 
 
 
